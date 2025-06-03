@@ -188,4 +188,20 @@ export const verifyOTP = async (req, res) => {
     }
 };
 
-export const resetPassword = (req, res) => { }
+export const resetPassword = async (req, res) => {
+  try {
+    const user = req.user;
+    const { password } = req.body;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await User.findByIdAndUpdate(user._id, {
+      password: hashedPassword,
+    });
+
+    return res.status(200).json({ message: 'Password has been reset successfully.' });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    return res.status(500).json({ message: 'Server error. Please try again later.' });
+  }
+};

@@ -49,3 +49,9 @@ export const validateForgotPassword = [
     .isEmail().withMessage('Invalid email format')
     .normalizeEmail(),
 ];
+
+export const validateResetPassword = [
+  body('password')
+    .notEmpty().withMessage('Password is required')
+    .isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+];
