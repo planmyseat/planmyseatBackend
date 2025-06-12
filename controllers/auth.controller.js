@@ -17,25 +17,13 @@ export const login = async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password.' });
         }
 
-        const token = jwt.sign(
-            { userId: user._id },
-            process.env.JWT_SECRET,
-            {
-                expiresIn: "1d",
-                algorithm: "HS256",
-                issuer: "planMySeat",
-            }
-        );
-
         if (!user.verified) {
             const otp = Math.floor(1000 + Math.random() * 9000).toString();
             const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 mins
 
-            // Attach OTP to user model
             user.otp = otp;
             user.otpExpiresAt = expiresAt;
 
-            // Send OTP
             await sendOtpEmail(email, otp);
 
             user.save()
@@ -44,6 +32,17 @@ export const login = async (req, res) => {
                 verified: user.verified
             })
         }
+
+        const token = jwt.sign(
+            { userId: user._id },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "10d",
+                algorithm: "HS256",
+                issuer: "planMySeat",
+            }
+        );
+
 
         return res.status(200).json({
             token,
@@ -169,7 +168,7 @@ export const verifyOTP = async (req, res) => {
             { userId: user._id },
             process.env.JWT_SECRET,
             {
-                expiresIn: "1d",
+                expiresIn: "10d",
                 algorithm: "HS256",
                 issuer: "planMySeat",
             }
