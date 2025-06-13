@@ -18,7 +18,7 @@ export const verifyAuth = async (req, res, next) => {
     const user = await User.findById(decoded.userId);
 
     if (!user) {
-      return res.status(401).json({ error: 'Please Login Again' });
+      return res.status(401).json({ error: 'Session Expired Please Login Again' });
     }
 
     req.user = user;
