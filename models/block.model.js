@@ -41,6 +41,14 @@ const BlockSchema = new Schema(
     classes: {
       type: [ClassSchema],
       default: [],
+      validate: {
+        validator: function (classes) {
+          const classNames = classes.map(cls => cls.className);
+          const uniqueNames = new Set(classNames);
+          return classNames.length === uniqueNames.size;
+        },
+        message: 'Class names must be unique within a block.',
+      },
     },
   },
   {
