@@ -1,26 +1,28 @@
 import e from "express";
-import authRoutes from "./routes/auth.route.js"
-import blockRoutes from "./routes/block.route.js"
-import classRoutes from "./routes/class.route.js"
 import { configDotenv } from "dotenv";
 import connectToMongoDB from "./db/ConnectToMongoDB.js";
 import helmet from "helmet";
+// block controllers
+import authRoutes from "./routes/auth.route.js"
+import blockRoutes from "./routes/block.route.js"
+import classRoutes from "./routes/class.route.js"
+//ctudebts page controllers
+import courseRouter from "./routes/course.route.js";
+import yearRouter from "./routes/year.route.js"
+import { validateJsonOnly } from "./middleware/validateJsonOnly.js";
 
 const app = e()
 configDotenv()
+
 const PORT = process.env.PORT || 3001
 
-app.use(e.urlencoded({extended: true}));
+app.use(e.json());
+app.use(e.urlencoded({ extended: true }));
 app.use(helmet());
 
 // middlewares to prevent non json data to cause error or server crash
-app.use((req, res, next) => {
-  const contentType = req.headers['content-type'];
-  if (req.method === 'POST' && contentType && !contentType.includes('application/json')) {
-    return res.status(400).json({ error: 'Server expects JSON data' });
-  }
-  next();
-});
+app.use(validateJsonOnly)
+
 
 app.use(e.json({
   strict: true,
@@ -34,9 +36,16 @@ app.use(e.json({
 }));
 
 //  actual Routes begains here
-app.use("/api/auth", authRoutes);
-app.use("/api/block", blockRoutes);
-app.use("/api/block/:id/class", classRoutes)
+
+app.use("/api/auth", authRoutes); //suthentication
+
+app.use("/api/block", blockRoutes); // block screen block related routes
+
+app.use("/api/block/:id/class", classRoutes) // block screen classes in blocks related routes
+
+app.use("/api/courses", courseRouter ) // students screen courses related routes
+
+app.use("/api/courses/:courseId/years", yearRouter) // student screen years in each course related routes
 
 // fallback to prevent server crash
 app.use((err, req, res, next) => {
@@ -48,6 +57,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Internal Server Error' });
 });
 
+// server starts here
 app.listen(PORT, () => {
     console.log(`server running on port ${PORT}`)
     connectToMongoDB()

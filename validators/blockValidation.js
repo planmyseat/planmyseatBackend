@@ -12,7 +12,6 @@ export const addClassValidator = [
   body("className")
     .trim()
     .escape()
-    // .toLowerCase()
     .notEmpty().withMessage("className is required")
     .isLength({ min: 2 }).withMessage("className must be at least 2 characters"),
 
