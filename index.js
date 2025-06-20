@@ -10,10 +10,7 @@ import classRoutes from "./routes/class.route.js"
 //course page controllers
 import courseRouter from "./routes/course.route.js";
 import yearRouter from "./routes/year.route.js"
-// profile controllers
-import profileRoutes from "./routes/profile.route.js";
 import studentRouter from "./routes/student.route.js"
-
 
 const app = e()
 configDotenv()
@@ -50,8 +47,6 @@ app.use("/api/block/:id/class", classRoutes) // block screen classes in blocks r
 app.use("/api/courses", courseRouter ) // students screen courses related routes
 
 app.use("/api/courses/:courseId/years", yearRouter) // student screen years in each course related routes
-
-app.use("/api/profile", profileRoutes) // profile related routes
 
 app.use("/api/courses/:courseId/years/:yearId/students", studentRouter) // student screen years in each course related routes
 

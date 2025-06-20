@@ -49,7 +49,8 @@ export const login = async (req, res) => {
             user: {
                 _id: user.id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                verified: user.verified
             },
             verified: user.verified
         })
@@ -100,7 +101,7 @@ export const signup = async (req, res) => {
         await newUser.save();
 
         // Send response
-        return res.status(201).json({message: "Account created"});
+        return res.status(201).json({ message: "Account created" });
 
     } catch (error) {
         console.error("Signup Error:", error);
@@ -111,15 +112,15 @@ export const signup = async (req, res) => {
 export const forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
-    
+
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json({ message: 'Invalid email ' });
         }
-            
+
         const otp = Math.floor(1000 + Math.random() * 9000).toString();
         const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 mins
-    
+
         // Attach OTP to user model
         user.otp = otp;
         user.otpExpiresAt = expiresAt;
@@ -127,10 +128,10 @@ export const forgotPassword = async (req, res) => {
 
         // Send OTP
         await sendOtpEmail(email, otp);
-    
+
         user.save();
 
-        return res.status(200).json({message: "OTP Sent"});
+        return res.status(200).json({ message: "OTP Sent" });
     } catch (error) {
         console.error('Forgot Password error:', error);
         res.status(500).json({ message: 'Server error. Please try again later.' });
@@ -178,7 +179,8 @@ export const verifyOTP = async (req, res) => {
             token, user: {
                 _id: user._id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                verified: user.verified
             }
         });
     } catch (err) {
@@ -188,19 +190,19 @@ export const verifyOTP = async (req, res) => {
 };
 
 export const resetPassword = async (req, res) => {
-  try {
-    const user = req.user;
-    const { password } = req.body;
+    try {
+        const user = req.user;
+        const { password } = req.body;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    await User.findByIdAndUpdate(user._id, {
-      password: hashedPassword,
-    });
+        await User.findByIdAndUpdate(user._id, {
+            password: hashedPassword,
+        });
 
-    return res.status(200).json({ message: 'Password has been reset successfully.' });
-  } catch (error) {
-    console.error('Reset password error:', error);
-    return res.status(500).json({ message: 'Server error. Please try again later.' });
-  }
+        return res.status(200).json({ message: 'Password has been reset successfully.' });
+    } catch (error) {
+        console.error('Reset password error:', error);
+        return res.status(500).json({ message: 'Server error. Please try again later.' });
+    }
 };
