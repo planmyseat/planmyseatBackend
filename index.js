@@ -10,7 +10,6 @@ import classRoutes from "./routes/class.route.js"
 //course page controllers
 import courseRouter from "./routes/course.route.js";
 import yearRouter from "./routes/year.route.js"
-import { validateJsonOnly } from "./middleware/validateJsonOnly.js";
 // profile controllers
 import profileRoutes from "./routes/profile.route.js";
 import studentRouter from "./routes/student.route.js"
