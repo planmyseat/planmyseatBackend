@@ -114,7 +114,7 @@ export const forgotPassword = async (req, res) => {
     
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(401).json({ message: 'Invalid email or password.' });
+            return res.status(401).json({ message: 'Invalid email ' });
         }
             
         const otp = Math.floor(1000 + Math.random() * 9000).toString();
