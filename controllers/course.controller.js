@@ -26,8 +26,7 @@ export const add = async (req, res) => {
     }
 
     return res.status(500).json({
-      error: 'Failed to create course',
-      details: error.message,
+      error: error.message,
     });
   }
 };
@@ -42,8 +41,7 @@ export const get = async (req, res) => {
     return res.status(200).json(courses);
   } catch (error) {
     return res.status(500).json({
-      error: 'Failed to fetch courses',
-      details: error.message,
+      error: error.message,
     });
   }
 };
@@ -73,8 +71,7 @@ export const update = async (req, res) => {
     }
 
     return res.status(500).json({
-      error: 'Failed to update course',
-      details: error.message,
+      error: error.message,
     });
   }
 };
@@ -93,8 +90,7 @@ export const remove = async (req, res) => {
     return res.status(200).json({ message: 'Course deleted successfully' });
   } catch (error) {
     return res.status(500).json({
-      error: 'Failed to delete course',
-      details: error.message,
+      error: error.message,
     });
   }
 };

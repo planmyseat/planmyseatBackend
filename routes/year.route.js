@@ -1,18 +1,16 @@
 import e from "express";
-import { add, get } from "../controllers/year.controller.js";
-import { verifyAuth } from "../middleware/verifyAuth.js";
-import { validateGetYear, validateYearAdd } from "../validators/courseValidation.js";
+import { validateDeleteYear, validateUpdateYear, validateYearAdd } from "../validators/courseValidation.js";
+import { add, remove, update } from "../controllers/year.controller.js";
 import { handleValidationErrors } from "../middleware/handleValidation.js";
+import { verifyAuth } from "../middleware/verifyAuth.js";
 import { upload } from "../utils/multer.config.js";
 
 const router = e.Router({ mergeParams: true });
 
-router.post("/", verifyAuth, upload.single("file"), validateYearAdd, handleValidationErrors, add) // route to add new years in courses
+router.post("/", verifyAuth, upload.single("file"), validateYearAdd, handleValidationErrors, add)
 
-router.get("/:yearId", verifyAuth, validateGetYear, handleValidationErrors, get) // router to get students in a perticullar year
+router.put("/:yearId", verifyAuth, validateUpdateYear, handleValidationErrors, update) 
 
-router.put("/:yearId", () => { }) // route to update already existing year
-
-router.delete("/:yearId", () => { }) // route to delete existing year
+router.delete("/:yearId", verifyAuth, validateDeleteYear, handleValidationErrors, remove)
 
 export default router

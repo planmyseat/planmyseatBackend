@@ -2,6 +2,7 @@ import e from "express";
 import { configDotenv } from "dotenv";
 import connectToMongoDB from "./db/ConnectToMongoDB.js";
 import helmet from "helmet";
+import { validateJsonOnly } from "./middleware/validateJsonOnly.js";
 // block controllers
 import authRoutes from "./routes/auth.route.js"
 import blockRoutes from "./routes/block.route.js"
@@ -9,7 +10,8 @@ import classRoutes from "./routes/class.route.js"
 //ctudebts page controllers
 import courseRouter from "./routes/course.route.js";
 import yearRouter from "./routes/year.route.js"
-import { validateJsonOnly } from "./middleware/validateJsonOnly.js";
+import studentRouter from "./routes/student.route.js"
+
 
 const app = e()
 configDotenv()
@@ -46,6 +48,8 @@ app.use("/api/block/:id/class", classRoutes) // block screen classes in blocks r
 app.use("/api/courses", courseRouter ) // students screen courses related routes
 
 app.use("/api/courses/:courseId/years", yearRouter) // student screen years in each course related routes
+
+app.use("/api/courses/:courseId/years/:yearId/students", studentRouter) // student screen years in each course related routes
 
 // fallback to prevent server crash
 app.use((err, req, res, next) => {

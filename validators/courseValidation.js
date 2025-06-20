@@ -35,8 +35,8 @@ export const validateYearAdd = [
   body('year')
     .trim()
     .notEmpty().withMessage('Year is required')
-    .isInt({ min: 1 }).withMessage('Year must be a valid number')
-    .toInt(), // sanitizes to integer
+    .toInt()
+    .isInt({ min: 1 }).withMessage('Year must be a valid number'),
 
   body('file')
     .custom((_, { req }) => {
@@ -57,7 +57,9 @@ export const validateYearAdd = [
     }),
 ];
 
-export const validateGetYear = [
+
+
+export const validateDeleteYear = [
   param('courseId')
     .trim()
     .notEmpty().withMessage('Course ID is required')
@@ -67,4 +69,22 @@ export const validateGetYear = [
     .trim()
     .notEmpty().withMessage('Year ID is required')
     .isMongoId().withMessage('Invalid Year ID'),
+];
+
+
+export const validateUpdateYear = [
+  param('courseId')
+    .trim()
+    .notEmpty().withMessage('Course ID is required')
+    .isMongoId().withMessage('Invalid Course ID'),
+
+  param('yearId')
+    .trim()
+    .notEmpty().withMessage('Year ID is required')
+    .isMongoId().withMessage('Invalid Year ID'),
+  body('year')
+    .trim()
+    .notEmpty().withMessage('Year is required')
+    .isInt({ min: 1 }).withMessage('Year must be a valid number')
+    .toInt(),
 ];

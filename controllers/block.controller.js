@@ -87,13 +87,11 @@ export const Delete = async (req, res) => {
     const userId = req.user._id;
     const { id } = req.params;
 
-    // Find block and check ownership
     const block = await Block.findOne({ _id: id, createdBy: userId });
     if (!block) {
       return res.status(404).json({ error: 'Block not found or unauthorized' });
     }
 
-    // Delete the block
     await Block.deleteOne({ _id: id });
 
     return res.status(200).json({ message: 'Block deleted successfully' });
