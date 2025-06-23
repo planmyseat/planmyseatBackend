@@ -4,13 +4,14 @@ const { Schema, model, models, Types } = mongoose;
 const studentSeatSchema = new Schema(
   {
     uid: { type: String, required: true },
-    name: { type: String, required: false },
+    name: { type: String, required: true },
     course: { type: String, required: true },
     className: { type: String, required: true },
     seat: {
-      row: { type: Number  },
-      column: { type: Number },
+      row: { type: Number, required: true },
+      column: { type: Number, required: true },
     },
+    attendance: {type: Boolean, default: false }
   },
   { _id: false }
 );
@@ -37,6 +38,4 @@ const seatingPlanSchema = new Schema(
   { timestamps: true }
 );
 
-const SeatingPlan = models.SeatingPlan || model('SeatingPlan', seatingPlanSchema);
-
-export default SeatingPlan;
+export default models.SeatingPlan || model('SeatingPlan', seatingPlanSchema);

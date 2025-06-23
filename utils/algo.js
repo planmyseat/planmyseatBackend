@@ -1,92 +1,56 @@
+export const generateSeatingPlanAlgo = (courseData, block, totalCapacity, totalStudents) => {
+    const arrangement = []
 
-export const generateSeatingPlanAlgo = (coursesUidsMap, classes) => {
-  const finalPlan = [];
-  const courseNames = Object.keys(coursesUidsMap);
-  const courseQueues = courseNames.map((name) => ({
-    name,
-    queue: [...coursesUidsMap[name]],
-  }));
+    let studentsPlaced = 0
 
-  let activeCourses = courseQueues.slice(0, 2);
-  let nextCourseIndex = 2;
+    let activeCourses = courseData.splice(0, 2)
 
-  for (const classObj of classes) {
-    const { className, row, columns } = classObj;
-    let lastAssignedCourseName = null;
-    let skipColumnForSingleCourse = false; // Track alternation for single course
-
-    for (let col = 1; col <= columns; col++) {
-      activeCourses = activeCourses.filter((c) => c.queue.length > 0);
-
-      while (activeCourses.length < 2 && nextCourseIndex < courseQueues.length) {
-        const nextCourse = courseQueues[nextCourseIndex++];
-        if (nextCourse.queue.length > 0) {
-          activeCourses.push(nextCourse);
-        }
-      }
-
-      if (activeCourses.length === 1) {
-        //  Skip krdo this column if alternation needed
-        if (skipColumnForSingleCourse) {
-          skipColumnForSingleCourse = false;
-          continue; // leave this column empty
-        } else {
-          skipColumnForSingleCourse = true;
-        }
-      }
-
-      if (activeCourses.length === 1) {
-        activeCourses.push({ name: "DUMMY", queue: [] });
-      }
-
-      let currentCourse;
-      if (activeCourses.length === 2) {
-        const [c1, c2] = activeCourses;
-        currentCourse = (c1.name === lastAssignedCourseName) ? c2 : c1;
-      } else {
-        continue;
-      }
-
-      lastAssignedCourseName = currentCourse.name;
-
-      for (let rowIndex = 1; rowIndex <= row; rowIndex++) {
-        const seat = { row: rowIndex, column: col };
-        let assigned = false;
-
-        while (!assigned) {
-          const uid = currentCourse.queue.shift();
-
-          if (uid !== undefined) {
-            finalPlan.push({
-              uid,
-              course: currentCourse.name,
-              className,
-              seat,
-            });
-            assigned = true;
-          } else {
-
-            activeCourses = activeCourses.filter(c => c.queue.length > 0);
-
-            while (activeCourses.length < 2 && nextCourseIndex < courseQueues.length) {
-              const nextCourse = courseQueues[nextCourseIndex++];
-              if (nextCourse.queue.length > 0) {
-                activeCourses.push(nextCourse);
-              }
+    while (studentsPlaced < totalCapacity && studentsPlaced < totalStudents) {
+        block.classes.forEach(cls => {
+            let odd = true
+            for (let c = 1; c <= cls.columns; c++) {
+                for (let r = 1; r <= cls.row; r++) {
+                    if (odd) {
+                        if (activeCourses[0].students.length < 1) {
+                            if (courseData.length) {
+                                activeCourses[0] = courseData.shift()                                
+                            } else {
+                                activeCourses[0] = { name: "dummy", students: [{ name: "-", uid: "-" }] }
+                            }
+                        }
+                        const data = activeCourses[0].students.shift()
+                        arrangement.push({
+                            uid: data.uid,
+                            name: data.name,
+                            course: activeCourses[0].name,
+                            className: cls.className,
+                            seat: { row: r, column: c },
+                            atendance: false
+                        })
+                        studentsPlaced++
+                    } else {
+                        if (activeCourses[1].students.length < 1) {
+                            if (courseData.length) {
+                                activeCourses[1] = courseData.shift()
+                            } else {
+                                activeCourses[1] = { name: "dummy", students: [{ name: "-", uid: "-" }] }
+                            }
+                        }
+                        const data = activeCourses[1].students.shift()
+                        arrangement.push({
+                            uid: data.uid,
+                            name: data.name,
+                            course: activeCourses[1].name,
+                            className: cls.className,
+                            seat: { row: r, column: c },
+                            atendance: false
+                        })
+                        studentsPlaced++
+                    }
+                }
+                odd = !odd
             }
-
-            if (activeCourses.length > 0) {
-              currentCourse = activeCourses.find(c => c.name !== currentCourse.name) || activeCourses[0];
-              lastAssignedCourseName = currentCourse.name;
-            } else {
-              assigned = true;
-            }
-          }
-        }
-      }
+        });
     }
-  }
-
-  return finalPlan;
-};
-  
+    return arrangement
+}
