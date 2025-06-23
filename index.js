@@ -10,7 +10,11 @@ import classRoutes from "./routes/class.route.js"
 //course page controllers
 import courseRouter from "./routes/course.route.js";
 import yearRouter from "./routes/year.route.js"
+// profile controllers
+import profileRoutes from "./routes/profile.route.js";
 import studentRouter from "./routes/student.route.js"
+import settingPlanRoutes from "./routes/seatingPlan.route.js";
+
 
 const app = e()
 configDotenv()
@@ -50,7 +54,9 @@ app.use("/api/courses/:courseId/years", yearRouter) // student screen years in e
 
 app.use("/api/courses/:courseId/years/:yearId/students", studentRouter) // student screen years in each course related routes
 
+app.use("/api/seatings",settingPlanRoutes) // settings related routes
 // fallback to prevent server crash
+
 app.use((err, req, res, next) => {
     if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
         console.error('Invalid JSON Error:', err.message);
