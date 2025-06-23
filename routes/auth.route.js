@@ -7,7 +7,7 @@ import { verifyAuth } from "../middleware/verifyAuth.js";
 
 const router = e.Router()
 
-router.post("/login", validateLogin, handleValidationErrors, rateLimiter, login)
+router.post("/login", validateLogin, handleValidationErrors, login)
 
 router.post("/signup",validateSignup, handleValidationErrors, rateLimiter, signup)
 
