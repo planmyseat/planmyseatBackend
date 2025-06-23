@@ -24,7 +24,6 @@ export const generateSeatingPlan = async (req, res) => {
       return res.status(404).json({ error: "Block not found" });
     }
 
-   
     const filteredData = await getFilteredCourseData(subjectMap);
 
     // 3. Create UID map by course name
@@ -39,23 +38,9 @@ export const generateSeatingPlan = async (req, res) => {
       session,
       blockId,
       createdBy: req.user._id,
-      students: plan.map((student) => ({
-        uid: student.uid,
-        name: student.name,
-        course: student.course,
-        className: student.className,
-        seat: student.seat,
-      })),
-      courses: filteredData.map((course) => ({
-        courseId: course.courseId,
-        courseName: course.courseName,
-        yearId: course.yearId,
-        year: course.year,
-        subject: course.subject,
-      })),
+      students: plan,
+      courses: filteredData,
     });
-
-    
 
     return res.status(200).json(seatingPlanDoc);
   } catch (error) {
