@@ -1,5 +1,3 @@
-// utils/filterCoursesBySubject.js
-
 import Course from "../models/course.model.js";
 
 export const getFilteredCourseData = async (subjectMap) => {
