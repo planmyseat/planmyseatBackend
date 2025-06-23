@@ -52,8 +52,6 @@ app.use("/api/courses", courseRouter ) // students screen courses related routes
 
 app.use("/api/courses/:courseId/years", yearRouter) // student screen years in each course related routes
 
-app.use("/api/profile", profileRoutes) // profile related routes
-
 app.use("/api/courses/:courseId/years/:yearId/students", studentRouter) // student screen years in each course related routes
 
 app.use("/api/seatings",settingPlanRoutes) // settings related routes

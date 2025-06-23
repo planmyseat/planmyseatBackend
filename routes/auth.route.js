@@ -11,7 +11,7 @@ router.post("/login", validateLogin, handleValidationErrors, login)
 
 router.post("/signup",validateSignup, handleValidationErrors, rateLimiter, signup)
 
-router.post("/forgotPassword", validateForgotPassword, handleValidationErrors, forgotPassword)
+router.post("/forgotPassword", validateForgotPassword, handleValidationErrors, rateLimiter, forgotPassword)
 
 router.post("/verifyOTP",validateOTP, handleValidationErrors, rateLimiter, verifyOTP)
 
