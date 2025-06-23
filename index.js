@@ -11,7 +11,6 @@ import classRoutes from "./routes/class.route.js"
 import courseRouter from "./routes/course.route.js";
 import yearRouter from "./routes/year.route.js"
 // profile controllers
-import profileRoutes from "./routes/profile.route.js";
 import studentRouter from "./routes/student.route.js"
 import settingPlanRoutes from "./routes/seatingPlan.route.js";
 
