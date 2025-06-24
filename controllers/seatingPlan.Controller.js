@@ -52,6 +52,10 @@ export const generateSeatingPlan = async (req, res) => {
       return res.status(409).json({ error: "Total students exceed block capacity" });
     }
 
+    if (totalStudents < 1) {
+      return res.status(409).json({ error: "Students not found" });
+    }
+
     const plan = generateSeatingPlanAlgo(courseData, block, totalCapacity, totalStudents);
 
     const seatingplan = new SeatingPlan({
