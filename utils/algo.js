@@ -15,7 +15,7 @@ export const generateSeatingPlanAlgo = (courseData, block, totalCapacity, totalS
                             if (courseData.length) {
                                 activeCourses[0] = courseData.shift()                                
                             } else {
-                                activeCourses[0] = { name: "dummy", students: [{ name: "-", uid: "-" }] }
+                                continue;
                             }
                         }
                         const data = activeCourses[0].students.shift()
@@ -33,7 +33,7 @@ export const generateSeatingPlanAlgo = (courseData, block, totalCapacity, totalS
                             if (courseData.length) {
                                 activeCourses[1] = courseData.shift()
                             } else {
-                                activeCourses[1] = { name: "dummy", students: [{ name: "-", uid: "-" }] }
+                                continue;
                             }
                         }
                         const data = activeCourses[1].students.shift()
