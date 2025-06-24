@@ -30,9 +30,14 @@ export const generateSeatingPlan = async (req, res) => {
         return res.status(404).json({ error: "Year in course not found" });
       }
 
+      const filteredStudents = year.students.filter((student) =>
+        student.subjects.includes(course.subject)
+      );
+
+
       courseData.push({
         name: `${data.course} year ${year.year}`,
-        students: year.students,
+        students: filteredStudents,
       });
     }
 
@@ -50,13 +55,13 @@ export const generateSeatingPlan = async (req, res) => {
     const plan = generateSeatingPlanAlgo(courseData, block, totalCapacity, totalStudents);
 
     const seatingplan = new SeatingPlan({
-        title,
-        date,
-        session,
-        blockId,
-        createdBy: userId,
-        students: plan,
-        courses
+      title,
+      date,
+      session,
+      blockId,
+      createdBy: userId,
+      students: plan,
+      courses
     })
 
     await seatingplan.save()
