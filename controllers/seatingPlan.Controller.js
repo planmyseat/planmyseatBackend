@@ -76,3 +76,22 @@ export const generateSeatingPlan = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const getPlans = async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    const plans = await SeatingPlan.find({ createdBy: userId })
+      .sort({ createdAt: -1 }) // Latest plans first
+      .lean();
+    
+    if (plans.length === 0) {
+      return res.status(200).json({ message: "No seating plans found", plans: [] });
+    }
+    return res.status(200).json({ plans });
+  } catch (error) {
+    console.error("Error fetching seating plans:", error);
+    return res.status(500).json({ error: "Failed to fetch seating plans" });
+  }
+};
+
