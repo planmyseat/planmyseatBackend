@@ -54,6 +54,7 @@ app.use("/api/courses/:courseId/years", yearRouter) // student screen years in e
 app.use("/api/courses/:courseId/years/:yearId/students", studentRouter) // student screen years in each course related routes
 
 app.use("/api/seatings",settingPlanRoutes) // settings related routes
+
 // fallback to prevent server crash
 
 app.use((err, req, res, next) => {
