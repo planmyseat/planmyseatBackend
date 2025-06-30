@@ -1,4 +1,5 @@
 import Course from '../models/course.model.js';
+import seatingPlan from '../models/seatingPlan.model.js';
 
 export const add = async (req, res) => {
   try {
@@ -86,6 +87,14 @@ export const remove = async (req, res) => {
     if (!course) {
       return res.status(404).json({ error: 'Course not found or not authorized to delete' });
     }
+
+    await seatingPlan.deleteMany({
+      courses: {
+        $elemMatch: { 
+          courseId: id,
+        }
+      }
+    })
 
     return res.status(200).json({ message: 'Course deleted successfully' });
   } catch (error) {

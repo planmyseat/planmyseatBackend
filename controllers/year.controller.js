@@ -21,8 +21,8 @@ export const add = async (req, res) => {
             subjects: row.Subjects?.split(',').map(s => s.trim()),
         }));
 
-        if(students.length <= 0){
-            return res.status(400).json({ error : "Wrong Formated Excell File"})
+        if (students.length <= 0) {
+            return res.status(400).json({ error: "Wrong Formated Excell File" })
         }
 
         const course = await Course.findOne({ _id: courseId, createdBy: userId }).select('_id course years');
@@ -113,6 +113,15 @@ export const remove = async (req, res) => {
         course.years.pull({ _id: yearId });
 
         await course.save();
+
+        await seatingPlan.deleteMany({
+            courses: {
+                $elemMatch: {
+                    courseId: courseId,
+                    yearId: yearId
+                }
+            }
+        })
 
         const plainCourse = course.toObject();
         delete plainCourse.__v;

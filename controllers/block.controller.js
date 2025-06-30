@@ -1,4 +1,5 @@
 import Block from '../models/block.model.js'; // Adjust path if needed
+import seatingPlan from '../models/seatingPlan.model.js';
 
 export const fetch = async (req, res) => {
   try {
@@ -91,7 +92,7 @@ export const Delete = async (req, res) => {
     if (!block) {
       return res.status(404).json({ error: 'Block not found or unauthorized' });
     }
-
+    await seatingPlan.deleteMany({blockId: id})
     await Block.deleteOne({ _id: id });
 
     return res.status(200).json({ message: 'Block deleted successfully' });
