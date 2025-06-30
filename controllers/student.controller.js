@@ -11,7 +11,6 @@ export const add = async (req, res) => {
     if (!course) {
       return res.status(404).json({ error: 'Course not found or access denied.' });
     }
-
     const year = course.years.id(yearId);
 
     if (!year) {

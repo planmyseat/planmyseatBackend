@@ -209,3 +209,45 @@ export const updateSeatingPlan = async (req, res) => {
     return res.status(500).json({ error: "Failed to update seating plan" });
   }
 };
+
+export const markAttendance = async (req, res) => {
+  const { planId, selectedCourse, presentStudents, className } = req.body;
+  const userId = req.user._id;
+
+  try {
+    const plan = await SeatingPlan.findOne({
+      _id: planId,
+      createdBy: userId,
+    });
+
+    if (!plan) {
+      return res.status(404).json({ message: "Seating plan not found." });
+    }
+
+    // Loop through students and update attendance
+    plan.students = plan.students.map((student) => {
+      if (
+        student.course === selectedCourse &&
+        student.className === className
+      ) {
+        if (presentStudents.includes(student.uid)) {
+          student.attendance = true;
+        } else {
+          student.attendance = false;
+        }
+      }
+      return student;
+    });
+
+    await plan.save();
+
+    return res.status(200).json({
+      message: "Attendance marked successfully",
+      updatedPlan: plan,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
