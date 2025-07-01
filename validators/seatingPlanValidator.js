@@ -90,3 +90,34 @@ export const validateUpdateSeatingPlan = [
         .notEmpty().withMessage("Subject is required")
         .isLength({ min: 1, max: 100 }).withMessage("Subject must be between 1–100 characters"),
 ];
+
+export const validateAttendance = [
+    param("id")
+        .trim()
+        .notEmpty().withMessage("Seating Plan ID is required")
+        .isMongoId().withMessage("Invalid Seating Plan ID format"),
+
+    body("className")
+        .trim()
+        .escape()
+        .notEmpty().withMessage("Class name is required")
+        .isLength({ max: 100 }).withMessage("Class name must not exceed 100 characters"),
+
+    body("presentStudents")
+        .isArray({ min: 0 }).withMessage("presentStudents must be an array")
+        .custom((arr) => arr.every((uid) => typeof uid === "string"))
+        .withMessage("Each student UID must be a string"),
+
+    body("presentStudents.*")
+        .trim()
+        .escape()
+        .notEmpty().withMessage("Student UID cannot be empty")
+        .isLength({ min: 3, max: 100 }).withMessage("Student UID must be between 3 and 100 characters"),
+];
+
+export const validateExcel = [
+    param("id")
+        .trim()
+        .notEmpty().withMessage("Seating Plan ID is required")
+        .isMongoId().withMessage("Invalid Seating Plan ID format"),
+]
