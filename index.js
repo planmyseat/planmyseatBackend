@@ -15,10 +15,12 @@ import studentRouter from "./routes/student.route.js";
 import settingPlanRoutes from "./routes/seatingPlan.route.js";
 
 const app = e();
+
 configDotenv();
 
 const PORT = process.env.PORT || 5000;
 
+app.set("trust proxy", 1);
 app.use(e.json());
 app.use(e.urlencoded({ extended: true }));
 app.use(helmet());
