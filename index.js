@@ -18,7 +18,7 @@ import settingPlanRoutes from "./routes/seatingPlan.route.js";
 const app = e()
 configDotenv()
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 5000;
 
 app.use(e.json());
 app.use(e.urlencoded({ extended: true }));
