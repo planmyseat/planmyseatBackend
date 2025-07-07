@@ -28,10 +28,7 @@ app.use(helmet());
 // middlewares to prevent non json data to cause error or server crash
 app.use(validateJsonOnly);
 
-app.use(
-  e.json({
-    strict: true,
-    verify: (req, res, buf) => {
+app.use(e.json({ strict: true,verify: (req, res, buf) => {
       try {
         JSON.parse(buf.toString());
       } catch {
