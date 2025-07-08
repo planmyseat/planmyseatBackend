@@ -41,7 +41,7 @@ app.use(e.json({ strict: true,verify: (req, res, buf) => {
 //  actual Routes begains here
 
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "Welcome to the Attendance Management System API" });
+  res.status(200).json({ message: " server is working.." });
 });
 
 app.use("/api/auth", authRoutes); //Authentication
