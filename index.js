@@ -40,6 +40,10 @@ app.use(e.json({ strict: true,verify: (req, res, buf) => {
 
 //  actual Routes begains here
 
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Welcome to the Attendance Management System API" });
+});
+
 app.use("/api/auth", authRoutes); //Authentication
 
 app.use("/api/block", blockRoutes); // block screen block related routes
