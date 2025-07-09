@@ -41,7 +41,9 @@ app.use(e.json({ strict: true,verify: (req, res, buf) => {
 //  actual Routes begains here
 
 app.get("/", (req, res) => {
-  res.status(200).json({ message: " server is working.." });
+  console.log("server is working..");
+  
+  res.json({ message: " server is working.." });
 });
 
 app.use("/api/auth", authRoutes); //Authentication
