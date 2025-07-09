@@ -43,7 +43,7 @@ app.use(e.json({ strict: true,verify: (req, res, buf) => {
 app.get("/", (req, res) => {
   console.log("server is working..");
   
-  res.json({ message: " server is working.." });
+  res.send({ message: " server is working.." });
 });
 
 app.use("/api/auth", authRoutes); //Authentication
