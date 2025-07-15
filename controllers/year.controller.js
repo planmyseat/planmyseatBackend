@@ -134,9 +134,9 @@ export const remove = async (req, res) => {
         delete plainCourse.createdAt;
         delete plainCourse.updatedAt;
 
+        console.log(plainCourse);
         return res.status(201).json(plainCourse);
     } catch (err) {
-         console.log(err.message);
         return res.status(500).json({
             error: err.message,
            
