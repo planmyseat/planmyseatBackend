@@ -136,8 +136,11 @@ export const remove = async (req, res) => {
 
         return res.status(201).json(plainCourse);
     } catch (err) {
+         console.log(err.message);
         return res.status(500).json({
             error: err.message,
+           
+            
         });
     }
 };
