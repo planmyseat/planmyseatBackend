@@ -101,9 +101,15 @@ export const update = async (req, res) => {
 };
 
 export const remove = async (req, res) => {
+
     try {
         const { courseId, yearId } = req.params;
         const { _id: userId } = req.user;
+
+        console.log("courseid",courseId);
+        console.log("yearid",yearId);
+        console.log("user",userId);
+        
 
         const course = await Course.findOne({ _id: courseId, createdBy: userId }).select('_id course years');
         if (!course) {
