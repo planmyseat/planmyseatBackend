@@ -1,5 +1,6 @@
 import xlsx from 'xlsx';
 import Course from '../models/course.model.js';
+import  seatingPlan from "../models/seatingPlan.model.js"
 
 export const add = async (req, res) => {
     try {
@@ -105,12 +106,7 @@ export const remove = async (req, res) => {
     try {
         const { courseId, yearId } = req.params;
         const { _id: userId } = req.user;
-
-        console.log("courseid",courseId);
-        console.log("yearid",yearId);
-        console.log("user",userId);
         
-
         const course = await Course.findOne({ _id: courseId, createdBy: userId }).select('_id course years');
         if (!course) {
             return res.status(404).json({ error: 'Course not found or unauthorized' });
